@@ -7,8 +7,11 @@
     "main": "server.js",
     "scripts": {
         "build": "tsc",
+        "dev": "nodemon server.ts",
         "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-        "prepare": "husky"
+        "prepare": "husky",
+        "pre-commit": "lint-staged",
+        "prettier": "prettier '**/*.{ts,tsx}' --write"
     },
     "dependencies": {
         "axios": "^1.6.8",
@@ -23,7 +26,16 @@
         "eslint": "^8.57.0",
         "eslint-config-prettier": "^9.1.0",
         "husky": "^9.0.11",
+        "lint-staged": "^15.2.2",
+        "nodemon": "^3.1.0",
         "prettier": "^3.2.5",
+        "ts-node": "^10.9.2",
         "typescript": "^5.4.5"
+    },
+    "lint-staged": {
+        "**/*.{ts,tsx,js,jsx}": [
+            "npm run prettier",
+            "npm run lint"
+        ]
     }
 }
