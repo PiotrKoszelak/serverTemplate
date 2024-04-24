@@ -1,9 +1,15 @@
-import axios from 'axios';
+// Global dependencies
 import express from 'express';
-
 import 'dotenv/config';
 
+// Project dependencies
+import router from './src/routes/chat';
+import { errorHandler } from './src/middlewares/error';
+
+// Express initialization
 const app = express();
+
+// Middlewares
 app.use(express.json());
 
 app.use(function (req, res, next) {
@@ -21,33 +27,8 @@ app.listen(port, () => {
     console.log(`Server running on port ${port}`);
 });
 
-const apiUrl = 'https://api.openai.com/v1/chat/completions';
+// Routes
+app.use('/chat', router);
 
-app.post('/chat', async (req, res) => {
-    const { message } = req.body;
-
-    try {
-        const response = await axios.post(
-            apiUrl,
-            {
-                messages: [{ role: 'user', content: message }],
-                max_tokens: 50,
-                temperature: 0.6,
-                n: 1,
-                model: 'gpt-3.5-turbo',
-            },
-            {
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
-                },
-            }
-        );
-
-        const botReply = response.data.choices[0].message.content;
-        res.send({ reply: botReply });
-    } catch (error) {
-        console.error(error);
-        res.status(500).send({ error: 'An error occurred' });
-    }
-});
+// Error handling
+app.use(errorHandler);
