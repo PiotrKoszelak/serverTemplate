@@ -10,7 +10,7 @@
         "dev": "nodemon server.ts",
         "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
         "prepare": "husky",
-        "pre-commit": "lint-staged",
+        "pre-commit": "lint-staged && npm test",
         "prettier": "prettier '**/*.{ts,tsx}' --write",
         "test": "jest --coverage"
     },
